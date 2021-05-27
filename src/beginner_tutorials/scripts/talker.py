@@ -9,7 +9,7 @@ from HandTracking_IO import main
 def talker():
         pub = rospy.Publisher('chatter', Float64MultiArray, queue_size=10)
         rospy.init_node('talker', anonymous=True)
-        rate = rospy.Rate(10) # 10hz
+        rate = rospy.Rate(100) # 10hz
         while not rospy.is_shutdown():
            #hello_str = "valami %s" % rospy.get_time()
            cord = Float64MultiArray()
