@@ -1,0 +1,2 @@
+beginner_tutorials
+-DCATKIN_DEVEL_PREFIX=/home/dr0id/fasztele/devel -DCMAKE_INSTALL_PREFIX=/home/dr0id/fasztele/install -G Unix Makefiles
