@@ -11,12 +11,12 @@ def talker():
         rospy.init_node('talker', anonymous=True)
         rate = rospy.Rate(10) # 10hz
         while not rospy.is_shutdown():
-           hello_str = "valami %s" % rospy.get_time()
+           #hello_str = "valami %s" % rospy.get_time()
            cord = Float64MultiArray()
            cord.data = main()
            rospy.loginfo(cord)
            pub.publish(cord)
-           rate.sleep()
+           #rate.sleep()
    
 if __name__ == '__main__':
        try:

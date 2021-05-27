@@ -57,25 +57,14 @@ class handDetector():
 
         return lmList
 
-        def talker():
-            pub = rospy.Publisher('chatter', String, queue_size=10)
-            rospy.init_node('talker', anonymous=True)
-            rate = rospy.Rate(10) # 10hz
-            while not rospy.is_shutdown():
-                hello_str = x_cord
-                rospy.loginfo(hello_str)
-                pub.publish(hello_str)
-                rate.sleep()
-
-
 def main():
     pTime = 0
     cTime = 0
 
 
     cap = cv2.VideoCapture(-1)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 564)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
 
     detector = handDetector()
 
@@ -83,55 +72,56 @@ def main():
 
 
     while True:
-        #actual_tcp_pose = rtde_r.getActualTCPPose()
+        try:
+            #actual_tcp_pose = rtde_r.getActualTCPPose()
 
-        success, img = cap.read()
-        img = detector.findHands(img)
+            success, img = cap.read()
+            img = detector.findHands(img)
 
-        lmList = detector.findPosition(img)
-        #asd = lmList[0]
-        lofasz = lmList[0][0]
-        xdd = lmList[0][1]
-        if len(lmList) != 0:
+            lmList = detector.findPosition(img)
+            #asd = lmList[0]
+            lofasz = lmList[0][0]
+            xdd = lmList[0][1]
+            if len(lmList) != 0:
 
-            x_cord = lmList[0][0]
-            y_cord = lmList[0][1]
-           
-            # x1_cord = lmList[4][0]
-            # y1_cord = lmList[4][1]
+                x_cord = lmList[0][0]
+                y_cord = lmList[0][1]
+            
+                # x1_cord = lmList[4][0]
+                # y1_cord = lmList[4][1]
 
-            # x2_cord = lmList[8][0]
-            # y2_cord = lmList[8][1]
+                # x2_cord = lmList[8][0]
+                # y2_cord = lmList[8][1]
 
-            # lenght = round(math.sqrt((x2_cord-x1_cord)**2+(y2_cord-y1_cord)**2), 3)
+                # lenght = round(math.sqrt((x2_cord-x1_cord)**2+(y2_cord-y1_cord)**2), 3)
 
 
 
-            # if lenght < 0.06:
+                # if lenght < 0.06:
 
-            #     gripper = "close"
-            # else:
+                #     gripper = "close"
+                # else:
 
-            #     gripper = "open"
+                #     gripper = "open"
 
             
+                #print(x_cord, y_cord, gripper)
+                #print(x_cord, y_cord)
+                #print(lenght)
+            cTime = time.time()
+            fps = 1/(cTime-pTime)
+            pTime = cTime
+
+            cv2.putText(img, str(int(fps)), (10,30), cv2.FONT_HERSHEY_PLAIN,2, (0,0,255), 2)
 
 
+            cv2.imshow("image", img)
 
-            #print(x_cord, y_cord, gripper)
-            #print(x_cord, y_cord)
-            #print(lenght)
-        cTime = time.time()
-        fps = 1/(cTime-pTime)
-        pTime = cTime
-
-        cv2.putText(img, str(int(fps)), (10,30), cv2.FONT_HERSHEY_PLAIN,2, (0,0,255), 2)
-
-
-        cv2.imshow("image", img)
-
-        cv2.waitKey(1)
-        return lofasz, xdd
-
+            cv2.waitKey(1)
+            return lofasz, xdd
+        
+        except:
+                continue
+        
 if __name__ == "__main__":
     main()
